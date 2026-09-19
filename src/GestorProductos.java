@@ -98,7 +98,9 @@ public class GestorProductos extends JFrame {
         // ----------------------------------------------------
 
         // Agregamos la etiqueta.
-        panelFormulario.add(new JLabel("Nombre:"));
+        JLabel lblNombre = new JLabel("Nombre:"); //Creo un JLabel con la etiqueta "Nombre". FFF
+        lblNombre.setHorizontalAlignment(SwingConstants.CENTER); //Lo centralizo horizontalmente. FFF
+        panelFormulario.add(lblNombre); //Lo agrego al formulario. FFF
 
         // Creamos el campo de texto.
         txtNombre = new JTextField();
@@ -111,7 +113,9 @@ public class GestorProductos extends JFrame {
         // CAMPO PRECIO
         // ----------------------------------------------------
 
-        panelFormulario.add(new JLabel("Precio:"));
+        JLabel lblPrecio = new JLabel("Precio:");
+        lblPrecio.setHorizontalAlignment(SwingConstants.CENTER);
+        panelFormulario.add(lblPrecio);
 
         txtPrecio = new JTextField();
 
@@ -122,7 +126,9 @@ public class GestorProductos extends JFrame {
         // CAMPO STOCK
         // ----------------------------------------------------
 
-        panelFormulario.add(new JLabel("Stock:"));
+        JLabel lblStock = new JLabel("Stock:");
+        lblStock.setHorizontalAlignment(SwingConstants.CENTER);
+        panelFormulario.add(lblStock);
 
         txtStock = new JTextField();
 
@@ -133,7 +139,9 @@ public class GestorProductos extends JFrame {
         // CATEGORÍA
         // ----------------------------------------------------
 
-        panelFormulario.add(new JLabel("Categoría:"));
+        JLabel lblCategoria = new JLabel("Categoría:");
+        lblCategoria.setHorizontalAlignment(SwingConstants.CENTER);
+        panelFormulario.add(lblCategoria);
 
         // Creamos el ComboBox.
         cmbCategoria = new JComboBox<>();
