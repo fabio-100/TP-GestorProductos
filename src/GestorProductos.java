@@ -200,6 +200,8 @@ public class GestorProductos extends JFrame {
         sorter.setSortable(3, false);  //categoría
         sorter.setSortable(4, false);  //valor total stock
 
+        tabla.setRowSorter(sorter);
+
         // JScrollPane permite desplazarnos si hay muchas filas.
         JScrollPane scrollTabla =
                 new JScrollPane(tabla);
