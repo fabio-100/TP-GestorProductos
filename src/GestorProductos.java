@@ -4,6 +4,9 @@ import javax.swing.*;
 // Importamos DefaultTableModel para administrar los datos de la JTable.
 import javax.swing.table.DefaultTableModel;
 
+// importo TableRowSorter para ordenar las filas de una tabla. FFF
+import javax.swing.table.TableRowSorter;
+
 // Importamos clases para organizar los componentes gráficos.
 import java.awt.*;
 
@@ -186,6 +189,10 @@ public class GestorProductos extends JFrame {
 
         // Creamos la tabla utilizando nuestro modelo.
         tabla = new JTable(modelo);
+
+        // Creo el ordenador/filtro basado en el modelo antes creado. FFF
+        TableRowSorter<DefaultTableModel> sorter =
+        new TableRowSorter<>(modelo);
 
         // JScrollPane permite desplazarnos si hay muchas filas.
         JScrollPane scrollTabla =
