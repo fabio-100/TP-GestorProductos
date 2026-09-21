@@ -196,8 +196,8 @@ public class GestorProductos extends JFrame {
 
         sorter.setSortable(0, true);   //nombre
         sorter.setSortable(1, true);   //precio
-        sorter.setSortable(2, false);  //stock
-        sorter.setSortable(3, false);  //categoría
+        sorter.setSortable(2, true);  //stock
+        sorter.setSortable(3, true);  //categoría
         sorter.setSortable(4, false);  //valor total stock
 
         tabla.setRowSorter(sorter);
