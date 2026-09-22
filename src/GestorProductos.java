@@ -52,6 +52,8 @@ public class GestorProductos extends JFrame {
     // ========================================================
 
     // JLabel utilizado para mostrar el valor total del stock.
+    private int filaModificar = -1;
+
     private JLabel lblTotal;
 
 
@@ -86,7 +88,7 @@ public class GestorProductos extends JFrame {
 
         // Creamos un panel con 5 filas y 2 columnas.
         JPanel panelFormulario =
-                new JPanel(new GridLayout(5, 2, 10, 10));
+                new JPanel(new GridLayout(6, 2, 10, 10));
 
         // Agregamos un margen interno al formulario.
         panelFormulario.setBorder(
@@ -168,9 +170,11 @@ public class GestorProductos extends JFrame {
 
         JButton btnAgregar = new JButton("Agregar");
         JButton btnLimpiar = new JButton("Limpiar");
+        JButton btnModificar = new JButton("Modificar");
 
         panelFormulario.add(btnAgregar);
         panelFormulario.add(btnLimpiar);
+        panelFormulario.add(btnModificar);
 
 
         // ====================================================
@@ -256,7 +260,7 @@ public class GestorProductos extends JFrame {
             // Eliminamos el producto seleccionado.
             eliminarProducto();
         });
-
+        btnModificar.addActionListener(e -> modificarProducto());
 
         // ====================================================
         // PANEL INFERIOR
@@ -566,7 +570,38 @@ public class GestorProductos extends JFrame {
             actualizarTotal();
         }
     }
+    private void modificarProducto() {
+int fila = tabla.getSelectedRow();
+if (filaModificar != -1) {
+    modelo.setValueAt(txtNombre.getText(), filaModificar, 0);
+    modelo.setValueAt(txtPrecio.getText(), filaModificar, 1);
+    modelo.setValueAt(txtStock.getText(), filaModificar, 2);
+    modelo.setValueAt(cmbCategoria.getSelectedItem(), filaModificar, 3);
 
+    limpiarFormulario();
+    filaModificar = -1;
+    actualizarTotal();
+    return;
+}
+ if (fila == -1) {
+        JOptionPane.showMessageDialog(this, "Seleccioná un producto.");
+        return;
+    }
+    int filaModelo = tabla.convertRowIndexToModel(fila);
+    filaModificar = filaModelo;
+    String nombre = modelo.getValueAt(filaModelo, 0).toString();
+    double precio = Double.parseDouble(modelo.getValueAt(filaModelo, 1).toString());
+    int stock = Integer.parseInt(modelo.getValueAt(filaModelo, 2).toString());
+    String categoria = modelo.getValueAt(filaModelo, 3).toString();
+    txtNombre.setText(nombre);
+    txtPrecio.setText(String.valueOf(precio));
+    txtStock.setText(String.valueOf(stock));
+    cmbCategoria.setSelectedItem(categoria);
+    JOptionPane.showMessageDialog(this, "Ahora podés modificar los datos.");
+
+    
+   
+}
 
     // ========================================================
     // ACTUALIZAR TOTAL
