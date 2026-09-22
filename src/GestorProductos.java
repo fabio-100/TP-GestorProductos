@@ -176,7 +176,24 @@ public class GestorProductos extends JFrame {
         panelFormulario.add(btnLimpiar);
         panelFormulario.add(btnModificar);
 
+        // ====================================================
+        // FILTRO POR CATEGORÍA
+        // ====================================================
 
+        JLabel lblFiltro = new JLabel("Filtrar por categoría:");
+
+        JComboBox<String> cmbFiltroCategoria = new JComboBox<>();
+
+        cmbFiltroCategoria.addItem("Todas");
+        cmbFiltroCategoria.addItem("Almacén");
+        cmbFiltroCategoria.addItem("Bebidas");
+        cmbFiltroCategoria.addItem("Limpieza");
+        cmbFiltroCategoria.addItem("Verduleria");
+        cmbFiltroCategoria.addItem("Lácteos");
+        cmbFiltroCategoria.addItem("Electrodomesticos");
+        cmbFiltroCategoria.addItem("Otros");
+ 
+        
         // ====================================================
         // CREAR TABLA
         // ====================================================
@@ -194,19 +211,140 @@ public class GestorProductos extends JFrame {
         modelo = new DefaultTableModel(columnas, 0);
 
         // Creamos la tabla utilizando nuestro modelo.
-        tabla = new JTable(modelo);
+       tabla = new JTable(modelo);
 
-        // Creo el ordenador/filtro basado en el modelo antes creado. FFF
-        TableRowSorter<DefaultTableModel> sorter =
+// Creamos el filtro por categoría.
+JComboBox<String> filtroCategoria = new JComboBox<>(
+        new String[]{
+                "Todas",
+                "Almacén",
+                "Bebidas",
+                "Limpieza",
+                "Verduleria",
+                "Lácteos",
+                "Electrodomesticos",
+                "Otros"
+        }
+);
+
+// Ordenador/filtro de la tabla.
+TableRowSorter<DefaultTableModel> sorter =
         new TableRowSorter<>(modelo);
 
-        sorter.setSortable(0, true);   //nombre
-        sorter.setSortable(1, true);   //precio
-        sorter.setSortable(2, true);  //stock
-        sorter.setSortable(3, true);  //categoría
-        sorter.setSortable(4, false);  //valor total stock
+sorter.setSortable(0, true);
+sorter.setSortable(1, true);
+sorter.setSortable(2, true);
+sorter.setSortable(3, true);
+sorter.setSortable(4, true);
 
-        tabla.setRowSorter(sorter);
+tabla.setRowSorter(sorter);
+tabla.getColumnModel().getColumn(3).setHeaderValue("Categoría ▼");
+
+JPopupMenu menuCategoria = new JPopupMenu();
+
+String[] categorias = {
+        "Todas",
+        "Almacén",
+        "Bebidas",
+        "Limpieza",
+        "Verduleria",
+        "Lácteos",
+        "Electrodomesticos",
+        "Otros"
+};
+
+for (String categoria : categorias) {
+
+    JMenuItem opcion = new JMenuItem(categoria);
+
+    opcion.addActionListener(e -> {
+
+        if (categoria.equals("Todas")) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(
+                    RowFilter.regexFilter(
+                            "^" + categoria + "$", 3
+                    )
+            );
+        }
+    });
+
+    menuCategoria.add(opcion);
+}
+
+tabla.getTableHeader().addMouseListener(
+        new java.awt.event.MouseAdapter() {
+
+            @Override
+            public void mouseClicked(
+                    java.awt.event.MouseEvent e) {
+
+                int columna =
+                        tabla.getTableHeader()
+                                .columnAtPoint(e.getPoint());
+
+                if (columna == 3) {
+                    menuCategoria.show(
+                            tabla.getTableHeader(),
+                            e.getX(),
+                            e.getY()
+                    );
+                }
+            }
+        }
+);
+// Filtro por categoría.
+filtroCategoria.addActionListener(e -> {
+
+    String categoria =
+            filtroCategoria.getSelectedItem().toString();
+
+    if (categoria.equals("Todas")) {
+        sorter.setRowFilter(null);
+    } else {
+        sorter.setRowFilter(
+                RowFilter.regexFilter(
+                        "^" + categoria + "$", 3
+                )
+        );
+    }
+});
+       
+
+filtroCategoria.addItem("Todas");
+filtroCategoria.addItem("Almacén");
+filtroCategoria.addItem("Bebidas");
+filtroCategoria.addItem("Limpieza");
+filtroCategoria.addItem("Verduleria");
+filtroCategoria.addItem("Lácteos");
+filtroCategoria.addItem("Electrodomesticos");
+filtroCategoria.addItem("Otros");
+
+filtroCategoria.addActionListener(e -> {
+    String categoria = filtroCategoria.getSelectedItem().toString();
+
+    if (categoria.equals("Todas")) {
+        sorter.setRowFilter(null);
+    } else {
+        sorter.setRowFilter(
+                RowFilter.regexFilter("^" + categoria + "$", 3)
+        );
+    }
+});
+        tabla.getTableHeader().addMouseListener(new java.awt.event.MouseAdapter() {
+    @Override
+    public void mouseClicked(java.awt.event.MouseEvent e) {
+
+        int columna = tabla.getTableHeader()
+                .columnAtPoint(e.getPoint());
+
+        if (columna == 3) {
+            filtroCategoria.showPopup();
+        }
+    }
+});
+  
 
         // JScrollPane permite desplazarnos si hay muchas filas.
         JScrollPane scrollTabla =
@@ -268,7 +406,7 @@ public class GestorProductos extends JFrame {
 
         JPanel panelInferior =
                 new JPanel(new BorderLayout());
-
+              
         // Botón a la izquierda.
         panelInferior.add(
                 btnEliminar,
